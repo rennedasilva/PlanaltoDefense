@@ -1,2 +1,6 @@
 # PlanaltoDefense
-Tower Defense no cenário brasileiro atual
+Jogo do estilo Tower Defense no cenário político brasileiro atual.
+
+# Necessário para rodar o jogo
+* Unity
+* Visual Studio
