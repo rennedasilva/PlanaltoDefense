@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class GameManagerBehavior : MonoBehaviour
 {
-
+     
     public Text goldLabel;
 
     public Text GoldLabel
