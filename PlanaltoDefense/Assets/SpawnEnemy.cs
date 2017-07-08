@@ -25,7 +25,7 @@ public class Wave
         {
             try
             {
-                enemyPrefab = EnemyPrefab;
+                enemyPrefab = value;
             }
             catch (Exception)
             {
@@ -103,7 +103,6 @@ public class Wave
 public class SpawnEnemy : MonoBehaviour
 {
 
-    public GameObject[] waypoints;
     public Wave[] waves;
 
     public Wave[] Waves
@@ -132,12 +131,151 @@ public class SpawnEnemy : MonoBehaviour
         }
     }
 
-    public int timeBetweenWaves = 5;
+    public GameObject[] waypoints;
+
+    public GameObject[] Waypoints
+    {
+        get
+        {
+            try
+            {
+                return waypoints;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        set
+        {
+            try
+            {
+                waypoints = value;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+
+    public int timeBetweenWaves; // = 5;
+
+    public int TimeBetweenWaves
+    {
+        get
+        {
+            try
+            {
+                return timeBetweenWaves;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        set
+        {
+            try
+            {
+                timeBetweenWaves = value;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
 
     private GameManagerBehavior gameManager;
 
+    private GameManagerBehavior GameManager
+    {
+        get
+        {
+            try
+            {
+                return gameManager;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        set
+        {
+            try
+            {
+                gameManager = value;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+
     private float lastSpawnTime;
-    private int enemiesSpawned = 0;
+
+    private float LastSpawnTime
+    {
+        get
+        {
+            try
+            {
+                return lastSpawnTime;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        set
+        {
+            try
+            {
+                lastSpawnTime = value;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+
+    private int enemiesSpawned; // = 0;
+
+    private int EnemiesSpawned
+    {
+        get
+        {
+            try
+            {
+                return enemiesSpawned;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        set
+        {
+            try
+            {
+                enemiesSpawned = value;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+
+    public SpawnEnemy()
+    {
+        EnemiesSpawned = 0;
+        TimeBetweenWaves = 5;
+    }
 
     // Use this for initialization
     void Start()

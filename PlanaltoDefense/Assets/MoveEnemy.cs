@@ -1,140 +1,22 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveEnemy : MonoBehaviour
-{
+public class MoveEnemy : MonoBehaviour {
 
-    [HideInInspector]
-    public GameObject[] waypoints;
+	[HideInInspector]
+	public GameObject[] waypoints;
+	private int currentWaypoint = 0;
+	private float lastWaypointSwitchTime;
+	public float speed = 1.0f;
 
-    public GameObject[] Waypoints
-    {
-        get
-        {
-            try
-            {
-                return waypoints;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        set
-        {
-            try
-            {
-                waypoints = value;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-    }
-
-    private int currentWaypoint;
-
-    private int CurrentWaypoint
-    {
-        get
-        {
-            try
-            {
-                return currentWaypoint;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        set
-        {
-            try
-            {
-                currentWaypoint = value;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-    }
-
-    private float lastWaypointSwitchTime;
-
-    private float LastWaypointSwitchTime
-    {
-        get
-        {
-            try
-            {
-                return lastWaypointSwitchTime;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        set
-        {
-            try
-            {
-                lastWaypointSwitchTime = value;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-    }
-
-    public float speed;
-
-    public float Speed
-    {
-        get
-        {
-            try
-            {
-                return speed;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        set
-        {
-            try
-            {
-                speed = value;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-    }
-
-
-    public MoveEnemy()
-    {
-        CurrentWaypoint = 0;
-        Speed = 1.0f;
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-        lastWaypointSwitchTime = Time.time;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+	// Use this for initialization
+	void Start () {
+		lastWaypointSwitchTime = Time.time;
+	}
+	
+	// Update is called once per frame
+	void Update () {
         // 1 
         Vector3 startPosition = waypoints[currentWaypoint].transform.position;
         Vector3 endPosition = waypoints[currentWaypoint + 1].transform.position;

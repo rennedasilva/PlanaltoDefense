@@ -1,12 +1,93 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ShootEnemies : MonoBehaviour {
 
     public List<GameObject> enemiesInRange;
+
+    public List<GameObject> EnemiesInRange
+    {
+        get
+        {
+            try
+            {
+                return enemiesInRange;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        set
+        {
+            try
+            {
+                enemiesInRange = value;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+
     private float lastShotTime;
+
+    private float LastShotTime
+    {
+        get
+        {
+            try
+            {
+                return lastShotTime;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        set
+        {
+            try
+            {
+                lastShotTime = value;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+
     private MonsterData monsterData;
+
+    private MonsterData MonsterData
+    {
+        get
+        {
+            try
+            {
+                return monsterData;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        set
+        {
+            try
+            {
+                monsterData = value;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
 
     // Use this for initialization
     void Start () {
