@@ -97,13 +97,13 @@ public class HealthBar : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        originalScale = gameObject.transform.localScale.x;
+        OriginalScale = gameObject.transform.localScale.x;
     }
 	
 	// Update is called once per frame
 	void Update () {
         Vector3 tmpScale = gameObject.transform.localScale;
-        tmpScale.x = currentHealth / maxHealth * originalScale;
+        tmpScale.x = CurrentHealth / MaxHealth * OriginalScale;
         gameObject.transform.localScale = tmpScale;
     }
 }

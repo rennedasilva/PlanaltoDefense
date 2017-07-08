@@ -20,10 +20,10 @@ MonoBehaviour:
     y: 30
     width: 1366
     height: 635
-  m_MinSize: {x: 679, y: 492}
-  m_MaxSize: {x: 14002, y: 14042}
+  m_MinSize: {x: 681, y: 471}
+  m_MaxSize: {x: 14000, y: 14021}
   vertical: 0
-  controlID: 284
+  controlID: 1997
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -120,10 +120,10 @@ MonoBehaviour:
     y: 0
     width: 1088
     height: 635
-  m_MinSize: {x: 404, y: 492}
-  m_MaxSize: {x: 10002, y: 14042}
+  m_MinSize: {x: 406, y: 471}
+  m_MaxSize: {x: 10000, y: 14021}
   vertical: 1
-  controlID: 285
+  controlID: 1957
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,10 +144,10 @@ MonoBehaviour:
     y: 0
     width: 1088
     height: 364
-  m_MinSize: {x: 404, y: 221}
-  m_MaxSize: {x: 8004, y: 4021}
+  m_MinSize: {x: 406, y: 221}
+  m_MaxSize: {x: 8006, y: 4021}
   vertical: 0
-  controlID: 286
+  controlID: 1904
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -166,8 +166,8 @@ MonoBehaviour:
     y: 0
     width: 269
     height: 364
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -201,8 +201,8 @@ MonoBehaviour:
     height: 343
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 080600005006000026060000e606000052060000a806000006060000600500007806000054060000
-    m_LastClickedID: 0
+    m_SelectedIDs: ec2a0000
+    m_LastClickedID: 10988
     m_ExpandedIDs: d4f4ffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -449,8 +449,8 @@ MonoBehaviour:
     y: 364
     width: 1088
     height: 271
-  m_MinSize: {x: 232, y: 271}
-  m_MaxSize: {x: 10002, y: 10021}
+  m_MinSize: {x: 230, y: 250}
+  m_MaxSize: {x: 10000, y: 10000}
   m_ActualView: {fileID: 12}
   m_Panes:
   - {fileID: 12}
@@ -496,18 +496,18 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets
+    - Assets/Audio
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets
+  - Assets/Audio
   m_LastFoldersGridSize: -1
   m_LastProjectPath: "C:\\Users\\Renn\xEA\\Documents\\PlanaltoDefense\\PlanaltoDefense"
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 91}
-    m_SelectedIDs: 98290000
-    m_LastClickedID: 10648
+    m_SelectedIDs: 5c2a0000
+    m_LastClickedID: 10844
     m_ExpandedIDs: 0000000098290000d229000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -561,8 +561,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 080600005006000026060000e606000052060000a806000006060000600500007806000054060000
-    m_LastClickedInstanceID: 1544
+    m_SelectedInstanceIDs: ec2a0000
+    m_LastClickedInstanceID: 10988
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000822800008c2600001c270000c28b0000ca8b00004c280000bef90000421d01009835f7ffcc26000062260000a67cffff
     m_RenameOverlay:
@@ -815,7 +815,7 @@ MonoBehaviour:
     y: 92
     width: 276
     height: 614
-  m_ScrollPosition: {x: 0, y: 0}
+  m_ScrollPosition: {x: 0, y: 274.95508}
   m_InspectorMode: 0
   m_PreviewResizer:
     m_CachedPref: 238

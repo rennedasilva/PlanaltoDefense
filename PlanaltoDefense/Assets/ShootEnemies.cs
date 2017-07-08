@@ -91,9 +91,9 @@ public class ShootEnemies : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        enemiesInRange = new List<GameObject>();
-        lastShotTime = Time.time;
-        monsterData = gameObject.GetComponentInChildren<MonsterData>();
+        EnemiesInRange = new List<GameObject>();
+        LastShotTime = Time.time;
+        MonsterData = gameObject.GetComponentInChildren<MonsterData>();
     }
 	
 	// Update is called once per frame
@@ -101,7 +101,7 @@ public class ShootEnemies : MonoBehaviour {
         GameObject target = null;
         // 1
         float minimalEnemyDistance = float.MaxValue;
-        foreach (GameObject enemy in enemiesInRange)
+        foreach (GameObject enemy in EnemiesInRange)
         {
             float distanceToGoal = enemy.GetComponent<MoveEnemy>().distanceToGoal();
             if (distanceToGoal < minimalEnemyDistance)
@@ -113,10 +113,10 @@ public class ShootEnemies : MonoBehaviour {
         // 2
         if (target != null)
         {
-            if (Time.time - lastShotTime > monsterData.CurrentLevel.fireRate)
+            if (Time.time - lastShotTime > MonsterData.CurrentLevel.FireRate)
             {
                 Shoot(target.GetComponent<Collider2D>());
-                lastShotTime = Time.time;
+                LastShotTime = Time.time;
             }
             // 3
             Vector3 direction = gameObject.transform.position - target.transform.position;
@@ -129,7 +129,7 @@ public class ShootEnemies : MonoBehaviour {
     // 1
     void OnEnemyDestroy(GameObject enemy)
     {
-        enemiesInRange.Remove(enemy);
+        EnemiesInRange.Remove(enemy);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -137,10 +137,10 @@ public class ShootEnemies : MonoBehaviour {
         // 2
         if (other.gameObject.tag.Equals("Enemy"))
         {
-            enemiesInRange.Add(other.gameObject);
+            EnemiesInRange.Add(other.gameObject);
             EnemyDestructionDelegate del =
                 other.gameObject.GetComponent<EnemyDestructionDelegate>();
-            del.enemyDelegate += OnEnemyDestroy;
+            del.EnemyDelegateProp += OnEnemyDestroy;
         }
     }
     // 3
@@ -148,16 +148,16 @@ public class ShootEnemies : MonoBehaviour {
     {
         if (other.gameObject.tag.Equals("Enemy"))
         {
-            enemiesInRange.Remove(other.gameObject);
+            EnemiesInRange.Remove(other.gameObject);
             EnemyDestructionDelegate del =
                 other.gameObject.GetComponent<EnemyDestructionDelegate>();
-            del.enemyDelegate -= OnEnemyDestroy;
+            del.EnemyDelegateProp -= OnEnemyDestroy;
         }
     }
 
     void Shoot(Collider2D target)
     {
-        GameObject bulletPrefab = monsterData.CurrentLevel.bullet;
+        GameObject bulletPrefab = MonsterData.CurrentLevel.Bullet;
         // 1 
         Vector3 startPosition = gameObject.transform.position;
         Vector3 targetPosition = target.transform.position;
@@ -173,9 +173,9 @@ public class ShootEnemies : MonoBehaviour {
         bulletComp.targetPosition = targetPosition;
 
         // 3 
-        Animator animator = monsterData.CurrentLevel.visualization.GetComponent<Animator>();
+        Animator animator = MonsterData.CurrentLevel.visualization.GetComponent<Animator>();
         animator.SetTrigger("fireShot");
-        AudioSource audioSource = monsterData.CurrentLevel.visualization.GetComponent<AudioSource>();
+        AudioSource audioSource = MonsterData.CurrentLevel.visualization.GetComponent<AudioSource>();
         audioSource.PlayOneShot(audioSource.clip);
     }
 

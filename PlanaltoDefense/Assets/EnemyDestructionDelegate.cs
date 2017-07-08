@@ -47,7 +47,7 @@ public class EnemyDestructionDelegate : MonoBehaviour {
 
     void OnDestroy()
     {
-        if (enemyDelegate != null)
+        if (EnemyDelegateProp != null)
         {
             enemyDelegate(gameObject);
         }
