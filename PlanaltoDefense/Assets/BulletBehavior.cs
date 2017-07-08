@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletBehavior : MonoBehaviour
 {
 
-    public float speed = 10;
+    public float speed;
     public float Speed
     {
         get
@@ -229,41 +227,43 @@ public class BulletBehavior : MonoBehaviour
             }
         }
     }
-
+    public BulletBehavior()
+    {
+        Speed = 10;
+    }
     // Use this for initialization
     void Start()
     {
-        startTime = Time.time;
-        distance = Vector3.Distance(startPosition, targetPosition);
+        StartTime = Time.time;
+        Distance = Vector3.Distance(StartPosition, TargetPosition);
         GameObject gm = GameObject.Find("GameManager");
-        gameManager = gm.GetComponent<GameManagerBehavior>();
+        GameManager = gm.GetComponent<GameManagerBehavior>();
     }
 
     // Update is called once per frame
     void Update()
     {
         // 1 
-        float timeInterval = Time.time - startTime;
-        gameObject.transform.position = Vector3.Lerp(startPosition, targetPosition, timeInterval * speed / distance);
+        float timeInterval = Time.time - StartTime;
+        gameObject.transform.position = Vector3.Lerp(StartPosition, TargetPosition, timeInterval * Speed / Distance);
 
         // 2 
-        if (gameObject.transform.position.Equals(targetPosition))
+        if (gameObject.transform.position.Equals(TargetPosition))
         {
-            if (target != null)
+            if (Target != null)
             {
                 // 3
-                Transform healthBarTransform = target.transform.Find("HealthBar");
-                HealthBar healthBar =
-                    healthBarTransform.gameObject.GetComponent<HealthBar>();
-                healthBar.currentHealth -= Mathf.Max(damage, 0);
+                Transform healthBarTransform = Target.transform.Find("HealthBar");
+                HealthBar healthBar = healthBarTransform.gameObject.GetComponent<HealthBar>();
+                healthBar.CurrentHealth -= Mathf.Max(Damage, 0);
                 // 4
-                if (healthBar.currentHealth <= 0)
+                if (healthBar.CurrentHealth <= 0)
                 {
-                    Destroy(target);
-                    AudioSource audioSource = target.GetComponent<AudioSource>();
+                    Destroy(Target);
+                    AudioSource audioSource = Target.GetComponent<AudioSource>();
                     AudioSource.PlayClipAtPoint(audioSource.clip, transform.position);
 
-                    gameManager.Gold += 50;
+                    GameManager.Gold += 50;
                 }
             }
             Destroy(gameObject);
