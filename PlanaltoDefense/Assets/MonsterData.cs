@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -123,7 +122,8 @@ public class MonsterData : MonoBehaviour
 {
     public List<MonsterLevel> levels;
 
-    public List<MonsterLevel> Levels {
+    public List<MonsterLevel> Levels
+    {
         get
         {
             try
@@ -164,7 +164,7 @@ public class MonsterData : MonoBehaviour
 
     void OnEnable()
     {
-        CurrentLevel = levels[0];
+        CurrentLevel = Levels[0];
     }
 
     //1
@@ -179,33 +179,22 @@ public class MonsterData : MonoBehaviour
         set
         {
             currentLevel = value;
-            int currentLevelIndex = levels.IndexOf(currentLevel);
+            int currentLevelIndex = Levels.IndexOf(currentLevel);
 
-            GameObject levelVisualization = levels[currentLevelIndex].visualization;
-            for (int i = 0; i < levels.Count; i++)
-            {
+            GameObject levelVisualization = Levels[currentLevelIndex].visualization;
+            for (int i = 0; i < Levels.Count; i++)
                 if (levelVisualization != null)
-                {
-                    if (i == currentLevelIndex)
-                    {
-                        levels[i].visualization.SetActive(true);
-                    }
-                    else
-                    {
-                        levels[i].visualization.SetActive(false);
-                    }
-                }
-            }
+                    Levels[i].visualization.SetActive(i == currentLevelIndex);
         }
     }
 
     public MonsterLevel getNextLevel()
     {
-        int currentLevelIndex = levels.IndexOf(currentLevel);
-        int maxLevelIndex = levels.Count - 1;
+        int currentLevelIndex = Levels.IndexOf(CurrentLevel);
+        int maxLevelIndex = Levels.Count - 1;
         if (currentLevelIndex < maxLevelIndex)
         {
-            return levels[currentLevelIndex + 1];
+            return Levels[currentLevelIndex + 1];
         }
         else
         {
@@ -215,10 +204,10 @@ public class MonsterData : MonoBehaviour
 
     public void increaseLevel()
     {
-        int currentLevelIndex = levels.IndexOf(currentLevel);
-        if (currentLevelIndex < levels.Count - 1)
+        int currentLevelIndex = Levels.IndexOf(currentLevel);
+        if (currentLevelIndex < Levels.Count - 1)
         {
-            CurrentLevel = levels[currentLevelIndex + 1];
+            CurrentLevel = Levels[currentLevelIndex + 1];
         }
     }
 

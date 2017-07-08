@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManagerBehavior : MonoBehaviour
 {
-     
+
     public Text goldLabel;
 
     public Text GoldLabel
@@ -207,7 +205,7 @@ public class GameManagerBehavior : MonoBehaviour
         set
         {
             gold = value;
-            goldLabel.GetComponent<Text>().text = "Seus pontos: " + gold;
+            GoldLabel.GetComponent<Text>().text = "Seus pontos: " + gold;
         }
     }
 
@@ -217,14 +215,14 @@ public class GameManagerBehavior : MonoBehaviour
         set
         {
             wave = value;
-            if (!gameOver)
+            if (!GameOver)
             {
-                for (int i = 0; i < nextWaveLabels.Length; i++)
+                for (int i = 0; i < NextWaveLabels.Length; i++)
                 {
-                    nextWaveLabels[i].GetComponent<Animator>().SetTrigger("nextWave");
+                    NextWaveLabels[i].GetComponent<Animator>().SetTrigger("nextWave");
                 }
             }
-            waveLabel.text = "Fase: " + (wave + 1);
+            WaveLabel.text = "Fase: " + (wave + 1);
         }
     }
 
@@ -240,26 +238,17 @@ public class GameManagerBehavior : MonoBehaviour
             }
             // 2
             health = value;
-            healthLabel.text = "Propina: R$" + health + " bi";
+            HealthLabel.text = "Propina: R$" + health + " bi";
             // 3
-            if (health <= 0 && !gameOver)
+            if (health <= 0 && !GameOver)
             {
-                gameOver = true;
+                GameOver = true;
                 GameObject gameOverText = GameObject.FindGameObjectWithTag("GameOver");
                 gameOverText.GetComponent<Animator>().SetBool("gameOver", true);
             }
             // 4 
             for (int i = 0; i < healthIndicator.Length; i++)
-            {
-                if (i < Health)
-                {
-                    healthIndicator[i].SetActive(true);
-                }
-                else
-                {
-                    healthIndicator[i].SetActive(false);
-                }
-            }
+                healthIndicator[i].SetActive(i < Health);
         }
     }
 
