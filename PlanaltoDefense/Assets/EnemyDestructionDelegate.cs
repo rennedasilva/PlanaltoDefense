@@ -1,42 +1,40 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyDestructionDelegate : MonoBehaviour {
 
-    public delegate void EnemyDelegate(GameObject enemy);
+	public delegate void EnemyDelegate(GameObject enemy);
 
-    public EnemyDelegate enemyDelegate;
+	public EnemyDelegate enemyDelegate;
 
-    public EnemyDelegate EnemyDelegateProp
-    {
-        get
-        {
-            try
-            {
-                return enemyDelegate;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        set
-        {
-            try
-            {
-                enemyDelegate = value;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-    }
+	public EnemyDelegate EnemyDelegateProp
+	{
+		get
+		{
+			try
+			{
+				return enemyDelegate;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+		set
+		{
+			try
+			{
+				enemyDelegate = value;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+	}
 
-    // Use this for initialization
-    void Start () {
+	// Use this for initialization
+	void Start () {
 		
 	}
 	
@@ -45,12 +43,10 @@ public class EnemyDestructionDelegate : MonoBehaviour {
 		
 	}
 
-    void OnDestroy()
-    {
-        if (EnemyDelegateProp != null)
-        {
-            enemyDelegate(gameObject);
-        }
-    }
+	void OnDestroy()
+	{
+		if (EnemyDelegateProp != null)		
+			EnemyDelegateProp(gameObject);		
+	}
 
 }

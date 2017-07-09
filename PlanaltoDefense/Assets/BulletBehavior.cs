@@ -231,7 +231,7 @@ public class BulletBehavior : MonoBehaviour
     {
         Speed = 10;
     }
-    // Use this for initialization
+    
     void Start()
     {
         StartTime = Time.time;
@@ -239,34 +239,36 @@ public class BulletBehavior : MonoBehaviour
         GameObject gm = GameObject.Find("GameManager");
         GameManager = gm.GetComponent<GameManagerBehavior>();
     }
-
-    // Update is called once per frame
+    
     void Update()
-    {
-        // 1 
+    {        
         float timeInterval = Time.time - StartTime;
         gameObject.transform.position = Vector3.Lerp(StartPosition, TargetPosition, timeInterval * Speed / Distance);
-
-        // 2 
+        
         if (gameObject.transform.position.Equals(TargetPosition))
         {
-            if (Target != null)
-            {
-                // 3
-                Transform healthBarTransform = Target.transform.Find("HealthBar");
-                HealthBar healthBar = healthBarTransform.gameObject.GetComponent<HealthBar>();
-                healthBar.CurrentHealth -= Mathf.Max(Damage, 0);
-                // 4
-                if (healthBar.CurrentHealth <= 0)
-                {
-                    Destroy(Target);
-                    AudioSource audioSource = Target.GetComponent<AudioSource>();
-                    AudioSource.PlayClipAtPoint(audioSource.clip, transform.position);
-
-                    GameManager.Gold += 50;
-                }
-            }
+            if (Target != null)            
+                HitEnemy();           
             Destroy(gameObject);
         }
+    }
+
+    private void HitEnemy()
+    {
+        Transform healthBarTransform = Target.transform.Find("HealthBar");
+        HealthBar healthBar = healthBarTransform.gameObject.GetComponent<HealthBar>();
+        healthBar.CurrentHealth -= Mathf.Max(Damage, 0);
+
+        if (healthBar.CurrentHealth <= 0)
+            DestroyEnemy();
+    }
+
+    private void DestroyEnemy()
+    {
+        Destroy(Target);
+        AudioSource audioSource = Target.GetComponent<AudioSource>();
+        AudioSource.PlayClipAtPoint(audioSource.clip, transform.position);
+
+        GameManager.Gold += 50;
     }
 }

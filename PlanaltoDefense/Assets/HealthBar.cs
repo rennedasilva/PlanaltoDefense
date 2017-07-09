@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthBar : MonoBehaviour {
+public class HealthBar : MonoBehaviour
+{
 
-    public float maxHealth; // = 100;
- 
+    public float maxHealth;
+
     public float MaxHealth
     {
         get
@@ -33,7 +32,7 @@ public class HealthBar : MonoBehaviour {
         }
     }
 
-    public float currentHealth; // = 100;
+    public float currentHealth;
 
     public float CurrentHealth
     {
@@ -95,13 +94,13 @@ public class HealthBar : MonoBehaviour {
         CurrentHealth = 100;
     }
 
-    // Use this for initialization
-    void Start () {
+    void Start()
+    {
         OriginalScale = gameObject.transform.localScale.x;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    void Update()
+    {
         Vector3 tmpScale = gameObject.transform.localScale;
         tmpScale.x = CurrentHealth / MaxHealth * OriginalScale;
         gameObject.transform.localScale = tmpScale;

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootEnemies : MonoBehaviour {
+public class ShootEnemies : MonoBehaviour
+{
 
     public List<GameObject> enemiesInRange;
 
@@ -90,27 +90,16 @@ public class ShootEnemies : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         EnemiesInRange = new List<GameObject>();
         LastShotTime = Time.time;
         MonsterData = gameObject.GetComponentInChildren<MonsterData>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-        GameObject target = null;
-        // 1
-        float minimalEnemyDistance = float.MaxValue;
-        foreach (GameObject enemy in EnemiesInRange)
-        {
-            float distanceToGoal = enemy.GetComponent<MoveEnemy>().distanceToGoal();
-            if (distanceToGoal < minimalEnemyDistance)
-            {
-                target = enemy;
-                minimalEnemyDistance = distanceToGoal;
-            }
-        }
-        // 2
+
+    void Update()
+    {
+        GameObject target = ChoseClosestEnemy(float.MaxValue);
         if (target != null)
         {
             if (Time.time - lastShotTime > MonsterData.CurrentLevel.FireRate)
@@ -120,10 +109,25 @@ public class ShootEnemies : MonoBehaviour {
             }
             // 3
             Vector3 direction = gameObject.transform.position - target.transform.position;
-            gameObject.transform.rotation = Quaternion.AngleAxis(
-                Mathf.Atan2(direction.y, direction.x) * 180 / Mathf.PI,
-                new Vector3(0, 0, 1));
+            gameObject.transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(direction.y, direction.x) * 180 / Mathf.PI, new Vector3(0, 0, 1));
         }
+    }
+
+    private GameObject ChoseClosestEnemy(float minimalEnemyDistance)
+    {
+        GameObject target = null;
+
+        foreach (GameObject enemy in EnemiesInRange)
+        {
+            float distanceToGoal = enemy.GetComponent<MoveEnemy>().DistanceToGoal();
+            if (distanceToGoal < minimalEnemyDistance)
+            {
+                target = enemy;
+                minimalEnemyDistance = distanceToGoal;
+            }
+        }
+
+        return target;
     }
 
     // 1
@@ -134,23 +138,20 @@ public class ShootEnemies : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // 2
         if (other.gameObject.tag.Equals("Enemy"))
         {
             EnemiesInRange.Add(other.gameObject);
-            EnemyDestructionDelegate del =
-                other.gameObject.GetComponent<EnemyDestructionDelegate>();
+            EnemyDestructionDelegate del = other.gameObject.GetComponent<EnemyDestructionDelegate>();
             del.EnemyDelegateProp += OnEnemyDestroy;
         }
     }
-    // 3
+
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.tag.Equals("Enemy"))
         {
             EnemiesInRange.Remove(other.gameObject);
-            EnemyDestructionDelegate del =
-                other.gameObject.GetComponent<EnemyDestructionDelegate>();
+            EnemyDestructionDelegate del = other.gameObject.GetComponent<EnemyDestructionDelegate>();
             del.EnemyDelegateProp -= OnEnemyDestroy;
         }
     }
@@ -173,8 +174,7 @@ public class ShootEnemies : MonoBehaviour {
         bulletComp.targetPosition = targetPosition;
 
         // 3 
-        Animator animator = MonsterData.CurrentLevel.visualization.GetComponent<Animator>();
-        animator.SetTrigger("fireShot");
+        Animator animator = MonsterData.CurrentLevel.visualization.GetComponent<Animator>();        
         AudioSource audioSource = MonsterData.CurrentLevel.visualization.GetComponent<AudioSource>();
         audioSource.PlayOneShot(audioSource.clip);
     }

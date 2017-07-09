@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -159,7 +157,7 @@ public class SpawnEnemy : MonoBehaviour
         }
     }
 
-    public int timeBetweenWaves; // = 5;
+    public int timeBetweenWaves;
 
     public int TimeBetweenWaves
     {
@@ -243,7 +241,7 @@ public class SpawnEnemy : MonoBehaviour
         }
     }
 
-    private int enemiesSpawned; // = 0;
+    private int enemiesSpawned;
 
     private int EnemiesSpawned
     {
@@ -280,48 +278,47 @@ public class SpawnEnemy : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        // Instantiate(testEnemyPrefab).GetComponent<MoveEnemy>().waypoints = waypoints;
         LastSpawnTime = Time.time;
         GameManager = GameObject.Find("GameManager").GetComponent<GameManagerBehavior>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // 1
         int currentWave = GameManager.Wave;
         if (currentWave < Waves.Length)
         {
-            // 2
             float timeInterval = Time.time - LastSpawnTime;
             float spawnInterval = Waves[currentWave].SpawnInterval;
-            if (((EnemiesSpawned == 0 && timeInterval > TimeBetweenWaves) ||
-                 timeInterval > spawnInterval) &&
-                EnemiesSpawned < Waves[currentWave].MaxEnemies)
-            {
-                // 3  
-                LastSpawnTime = Time.time;
-                GameObject newEnemy = (GameObject)Instantiate(Waves[currentWave].EnemyPrefab);
-                newEnemy.GetComponent<MoveEnemy>().waypoints = Waypoints;
-                EnemiesSpawned++;
-            }
-            // 4 
-            if (EnemiesSpawned == Waves[currentWave].MaxEnemies &&
-                GameObject.FindGameObjectWithTag("Enemy") == null)
-            {
-                GameManager.Wave++;
-                GameManager.Gold = Mathf.RoundToInt(GameManager.Gold * 1.1f);
-                EnemiesSpawned = 0;
-                LastSpawnTime = Time.time;
-            }
-            // 5 
+            if (((EnemiesSpawned == 0 && timeInterval > TimeBetweenWaves) || timeInterval > spawnInterval) && EnemiesSpawned < Waves[currentWave].MaxEnemies)
+                SpawnEnemies(currentWave);
+            if (EnemiesSpawned == Waves[currentWave].MaxEnemies && GameObject.FindGameObjectWithTag("Enemy") == null)
+                StartNextWave();
         }
         else
-        {
-            GameManager.GameOver = true;
-            GameObject gameOverText = GameObject.FindGameObjectWithTag("GameWon");
-            gameOverText.GetComponent<Animator>().SetBool("gameOver", true);
-        }
+            EndGame();
 
+    }
+
+    private void SpawnEnemies(int currentWave)
+    {
+        LastSpawnTime = Time.time;
+        GameObject newEnemy = (GameObject)Instantiate(Waves[currentWave].EnemyPrefab);
+        newEnemy.GetComponent<MoveEnemy>().waypoints = Waypoints;
+        EnemiesSpawned++;
+    }
+
+    private void EndGame()
+    {
+        GameManager.GameOver = true;
+        GameObject gameOverText = GameObject.FindGameObjectWithTag("GameWon");
+        gameOverText.GetComponent<Animator>().SetBool("gameOver", true);
+    }
+
+    private void StartNextWave()
+    {
+        GameManager.Wave++;
+        GameManager.Gold = Mathf.RoundToInt(GameManager.Gold * 1.1f);
+        EnemiesSpawned = 0;
+        LastSpawnTime = Time.time;
     }
 }

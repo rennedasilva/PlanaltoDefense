@@ -185,7 +185,6 @@ public class GameManagerBehavior : MonoBehaviour
         GameOver = false;
     }
 
-    // Use this for initialization
     void Start()
     {
         Wave = 0;
@@ -193,11 +192,7 @@ public class GameManagerBehavior : MonoBehaviour
         Health = 5;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    void Update() { }
 
     public int Gold
     {
@@ -205,7 +200,7 @@ public class GameManagerBehavior : MonoBehaviour
         set
         {
             gold = value;
-            GoldLabel.GetComponent<Text>().text = "Seus pontos: " + gold;
+            GoldLabel.GetComponent<Text>().text = string.Format("Seus pontos: {0}", gold);
         }
     }
 
@@ -216,13 +211,10 @@ public class GameManagerBehavior : MonoBehaviour
         {
             wave = value;
             if (!GameOver)
-            {
                 for (int i = 0; i < NextWaveLabels.Length; i++)
-                {
                     NextWaveLabels[i].GetComponent<Animator>().SetTrigger("nextWave");
-                }
-            }
-            WaveLabel.text = "Fase: " + (wave + 1);
+
+            WaveLabel.text = string.Format("Fase: {0}", (wave + 1));
         }
     }
 
@@ -231,25 +223,31 @@ public class GameManagerBehavior : MonoBehaviour
         get { return health; }
         set
         {
-            // 1
             if (value < health)
-            {
                 Camera.main.GetComponent<CameraShake>().Shake();
-            }
-            // 2
+
             health = value;
-            HealthLabel.text = "Propina: R$" + health + " bi";
-            // 3
+            HealthLabel.text = string.Format("Propina: R${0} bi", health);
+
             if (health <= 0 && !GameOver)
             {
-                GameOver = true;
-                GameObject gameOverText = GameObject.FindGameObjectWithTag("GameOver");
-                gameOverText.GetComponent<Animator>().SetBool("gameOver", true);
+                PerformGameOver();
             }
-            // 4 
-            for (int i = 0; i < healthIndicator.Length; i++)
-                healthIndicator[i].SetActive(i < Health);
+
+            UpdateHealthprite();
         }
     }
 
+    private void UpdateHealthprite()
+    {
+        for (int i = 0; i < HealthIndicator.Length; i++)
+            HealthIndicator[i].SetActive(i < Health);
+    }
+
+    private void PerformGameOver()
+    {
+        GameOver = true;
+        GameObject gameOverText = GameObject.FindGameObjectWithTag("GameOver");
+        gameOverText.GetComponent<Animator>().SetBool("gameOver", true);
+    }
 }

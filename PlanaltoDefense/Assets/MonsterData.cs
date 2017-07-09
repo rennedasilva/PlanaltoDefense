@@ -150,45 +150,38 @@ public class MonsterData : MonoBehaviour
 
     private MonsterLevel currentLevel;
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
+    void Start() { }
 
     // Update is called once per frame
-    void Update()
-    {
-
-    }
+    void Update() { }
 
     void OnEnable()
     {
         CurrentLevel = Levels[0];
     }
-
-    //1
+    
     public MonsterLevel CurrentLevel
     {
-        //2
         get
         {
             return currentLevel;
-        }
-        //3
+        }     
         set
         {
-            currentLevel = value;
-            int currentLevelIndex = Levels.IndexOf(currentLevel);
-
-            GameObject levelVisualization = Levels[currentLevelIndex].visualization;
-            for (int i = 0; i < Levels.Count; i++)
-                if (levelVisualization != null)
-                    Levels[i].visualization.SetActive(i == currentLevelIndex);
+            currentLevel = value;           
+            SelectLevelSprite(Levels.IndexOf(currentLevel));
         }
     }
 
-    public MonsterLevel getNextLevel()
+    private void SelectLevelSprite(int currentLevelIndex)
+    {
+        GameObject levelVisualization = Levels[currentLevelIndex].Visualization;
+        for (int i = 0; i < Levels.Count; i++)
+            if (levelVisualization != null)
+                Levels[i].Visualization.SetActive(i == currentLevelIndex);
+    }
+
+    public MonsterLevel GetNextLevel()
     {
         int currentLevelIndex = Levels.IndexOf(CurrentLevel);
         int maxLevelIndex = Levels.Count - 1;
@@ -202,7 +195,7 @@ public class MonsterData : MonoBehaviour
         }
     }
 
-    public void increaseLevel()
+    public void IncreaseLevel()
     {
         int currentLevelIndex = Levels.IndexOf(currentLevel);
         if (currentLevelIndex < Levels.Count - 1)
