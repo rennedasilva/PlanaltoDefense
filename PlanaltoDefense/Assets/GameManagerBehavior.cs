@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -230,24 +232,29 @@ public class GameManagerBehavior : MonoBehaviour
             HealthLabel.text = string.Format("Propina: R${0} bi", health);
 
             if (health <= 0 && !GameOver)
-            {
-                PerformGameOver();
-            }
+                GameOver = PerformGameOver();
 
-            UpdateHealthprite();
+            HealthIndicator = UpdateHealthSprite(HealthIndicator.ToList(), health);
         }
     }
 
-    private void UpdateHealthprite()
-    {
-        for (int i = 0; i < HealthIndicator.Length; i++)
-            HealthIndicator[i].SetActive(i < Health);
-    }
+    static Func<List<GameObject>, int, GameObject[]> UpdateHealthSprite = (List<GameObject> healthIndicator, int health) =>
+   {
+       List<GameObject> indicators = new List<GameObject>();
+       if (healthIndicator.Count > 1)
+           indicators.AddRange(UpdateHealthSprite(healthIndicator.GetRange(0, healthIndicator.Count - 1), health));
 
-    private void PerformGameOver()
-    {
-        GameOver = true;
-        GameObject gameOverText = GameObject.FindGameObjectWithTag("GameOver");
-        gameOverText.GetComponent<Animator>().SetBool("gameOver", true);
-    }
+       GameObject indicator = healthIndicator[healthIndicator.Count - 1];
+       indicator.SetActive(healthIndicator.Count - 1 < health);
+       indicators.Add(indicator);
+
+       return indicators.ToArray();
+   };
+
+    Func<bool> PerformGameOver = () =>
+      {
+          GameObject gameOverText = GameObject.FindGameObjectWithTag("GameOver");
+          gameOverText.GetComponent<Animator>().SetBool("gameOver", true);
+          return true;
+      };
 }

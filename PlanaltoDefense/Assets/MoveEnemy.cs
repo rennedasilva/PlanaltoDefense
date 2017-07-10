@@ -135,23 +135,27 @@ public class MoveEnemy : MonoBehaviour
 
         if (gameObject.transform.position.Equals(endPosition))
         {
-            if (CurrentWaypoint < Waypoints.Length - 2)            
-                ChangeDirection();            
-            else            
-                EnemyPerformAtack();            
-        }
+            if (CurrentWaypoint < Waypoints.Length - 2)
+                ChangeDirection();
+            else
+            {
+                Destroy(gameObject);
+                EnemyPerformAtack(this);
+            }
+        }        
     }
 
-    private void EnemyPerformAtack()
+    Func<MoveEnemy, bool> EnemyPerformAtack = (MoveEnemy moveEnemy) =>
     {
-        Destroy(gameObject);
+        
 
-        AudioSource audioSource = gameObject.GetComponent<AudioSource>();
-        AudioSource.PlayClipAtPoint(audioSource.clip, transform.position);
+        AudioSource audioSource = moveEnemy.gameObject.GetComponent<AudioSource>();
+        AudioSource.PlayClipAtPoint(audioSource.clip, moveEnemy.transform.position);
 
         GameManagerBehavior gameManager = GameObject.Find("GameManager").GetComponent<GameManagerBehavior>();
         gameManager.Health -= 1;
-    }
+        return true;
+    };
 
     private void ChangeDirection()
     {

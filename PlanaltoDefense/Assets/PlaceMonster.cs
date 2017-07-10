@@ -100,48 +100,49 @@ public class PlaceMonster : MonoBehaviour
 
     }
 
-    private bool CanPlaceMonster()
-    {        
-        return (Monster == null && GameManager.Gold >= 200);
-    }
+    Func<GameObject, int, bool> CanPlaceMonster = (GameObject monster, int gold) => (monster == null && gold >= 200);
 
-    
+    Func<GameObject, int, bool> CanUpgradeMonster = (GameObject monster, int gold) =>
+   {
+       if (monster != null)
+       {
+           MonsterData monsterData = monster.GetComponent<MonsterData>();
+           MonsterLevel nextLevel = monsterData.GetNextLevel();
+           if (nextLevel != null)
+               return gold >= nextLevel.cost;
+       }
+       return false;
+   };
+
+
     void OnMouseUp()
-    {        
-        if (CanPlaceMonster())        
-            AddNewTower();        
-        else if (CanUpgradeMonster())        
-            UpgradeTower();        
+    {
+        if (CanPlaceMonster(Monster, GameManager.Gold))
+            GameManager.Gold = SpentMoney(GameManager.Gold, AddNewTower(this));
+        else if (CanUpgradeMonster(Monster, GameManager.Gold))
+            GameManager.Gold = SpentMoney(GameManager.Gold, UpgradeTower(this));
     }
 
-    private void UpgradeTower()
+    Func<PlaceMonster, int> UpgradeTower = (PlaceMonster placeMonster) =>
     {
-        Monster.GetComponent<MonsterData>().IncreaseLevel();
-        AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+        GameObject monster = placeMonster.Monster;
+        MonsterData monsterData = monster.GetComponent<MonsterData>();
+        monsterData.CurrentLevel = monsterData.IncreaseLevel(monsterData.Levels.IndexOf(monsterData.CurrentLevel), monsterData.Levels);
+        AudioSource audioSource = placeMonster.gameObject.GetComponent<AudioSource>();
         audioSource.PlayOneShot(audioSource.clip);
 
-        GameManager.Gold -= Monster.GetComponent<MonsterData>().CurrentLevel.cost;
-    }
+        return placeMonster.Monster.GetComponent<MonsterData>().CurrentLevel.cost;
+    };
 
-    private void AddNewTower()
-    {
-        Monster = (GameObject)Instantiate(MonsterPrefab, transform.position, Quaternion.identity);
-        AudioSource audioSource = gameObject.GetComponent<AudioSource>();
-        audioSource.PlayOneShot(audioSource.clip);
+    Func<PlaceMonster, int> AddNewTower = (PlaceMonster placeMonster) =>
+       {
+           placeMonster.Monster = Instantiate(placeMonster.MonsterPrefab, placeMonster.transform.position, Quaternion.identity);
+           AudioSource audioSource = placeMonster.gameObject.GetComponent<AudioSource>();
+           audioSource.PlayOneShot(audioSource.clip);
 
-        GameManager.Gold -= Monster.GetComponent<MonsterData>().CurrentLevel.cost;
-    }
+           return placeMonster.Monster.GetComponent<MonsterData>().CurrentLevel.cost;
+       };
 
-    private bool CanUpgradeMonster()
-    {
-        if (Monster != null)
-        {
-            MonsterData monsterData = Monster.GetComponent<MonsterData>();
-            MonsterLevel nextLevel = monsterData.GetNextLevel();
-            if (nextLevel != null)            
-                return GameManager.Gold >= nextLevel.cost;            
-        }
-        return false;
-    }
+    Func<int, int, int> SpentMoney = (int currentGold, int buy) => currentGold - buy;
 
 }

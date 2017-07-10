@@ -99,7 +99,7 @@ public class ShootEnemies : MonoBehaviour
 
     void Update()
     {
-        GameObject target = ChoseClosestEnemy(float.MaxValue);
+        GameObject target = ChoseClosestEnemy(float.MaxValue, EnemiesInRange);
         if (target != null)
         {
             if (Time.time - lastShotTime > MonsterData.CurrentLevel.FireRate)
@@ -113,11 +113,12 @@ public class ShootEnemies : MonoBehaviour
         }
     }
 
-    private GameObject ChoseClosestEnemy(float minimalEnemyDistance)
+    Func<float, List<GameObject>, GameObject> ChoseClosestEnemy = (float minimalEnemyDistance, List<GameObject> enemiesInRange) =>
     {
+
         GameObject target = null;
 
-        foreach (GameObject enemy in EnemiesInRange)
+        enemiesInRange.ForEach(enemy =>
         {
             float distanceToGoal = enemy.GetComponent<MoveEnemy>().DistanceToGoal();
             if (distanceToGoal < minimalEnemyDistance)
@@ -125,10 +126,10 @@ public class ShootEnemies : MonoBehaviour
                 target = enemy;
                 minimalEnemyDistance = distanceToGoal;
             }
-        }
+        });
 
         return target;
-    }
+    };
 
     // 1
     void OnEnemyDestroy(GameObject enemy)
@@ -174,7 +175,7 @@ public class ShootEnemies : MonoBehaviour
         bulletComp.targetPosition = targetPosition;
 
         // 3 
-        Animator animator = MonsterData.CurrentLevel.visualization.GetComponent<Animator>();        
+        Animator animator = MonsterData.CurrentLevel.visualization.GetComponent<Animator>();
         AudioSource audioSource = MonsterData.CurrentLevel.visualization.GetComponent<AudioSource>();
         audioSource.PlayOneShot(audioSource.clip);
     }

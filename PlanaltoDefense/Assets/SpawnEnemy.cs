@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using UnityEngine;
 
 [System.Serializable]
@@ -33,7 +34,7 @@ public class Wave
         }
     }
 
-    public float spawnInterval;// = 2;
+    public float spawnInterval;
 
     public float SpawnInterval
     {
@@ -63,7 +64,7 @@ public class Wave
         }
     }
 
-    public int maxEnemies;// = 20;
+    public int maxEnemies;
 
     public int MaxEnemies
     {
@@ -290,35 +291,37 @@ public class SpawnEnemy : MonoBehaviour
             float timeInterval = Time.time - LastSpawnTime;
             float spawnInterval = Waves[currentWave].SpawnInterval;
             if (((EnemiesSpawned == 0 && timeInterval > TimeBetweenWaves) || timeInterval > spawnInterval) && EnemiesSpawned < Waves[currentWave].MaxEnemies)
-                SpawnEnemies(currentWave);
+                SpawnEnemies(currentWave, this);
             if (EnemiesSpawned == Waves[currentWave].MaxEnemies && GameObject.FindGameObjectWithTag("Enemy") == null)
-                StartNextWave();
+                StartNextWave(this);
         }
         else
-            EndGame();
-
+            GameManager.GameOver = EndGame();
     }
 
-    private void SpawnEnemies(int currentWave)
-    {
-        LastSpawnTime = Time.time;
-        GameObject newEnemy = (GameObject)Instantiate(Waves[currentWave].EnemyPrefab);
-        newEnemy.GetComponent<MoveEnemy>().waypoints = Waypoints;
-        EnemiesSpawned++;
-    }
+    Func<int, SpawnEnemy, bool> SpawnEnemies = (int currentWave, SpawnEnemy Entidade) =>
+      {
+          Entidade.LastSpawnTime = Time.time;
+          GameObject newEnemy = Instantiate(Entidade.Waves[currentWave].EnemyPrefab);
+          newEnemy.GetComponent<MoveEnemy>().waypoints = Entidade.Waypoints;
+          Entidade.EnemiesSpawned++;
+          return true;
+      };
 
-    private void EndGame()
+
+    Func<bool> EndGame = () =>
     {
-        GameManager.GameOver = true;
         GameObject gameOverText = GameObject.FindGameObjectWithTag("GameWon");
         gameOverText.GetComponent<Animator>().SetBool("gameOver", true);
-    }
+        return true;
+    };
 
-    private void StartNextWave()
+    Func<SpawnEnemy, SpawnEnemy> StartNextWave = (SpawnEnemy enemy) =>
     {
-        GameManager.Wave++;
-        GameManager.Gold = Mathf.RoundToInt(GameManager.Gold * 1.1f);
-        EnemiesSpawned = 0;
-        LastSpawnTime = Time.time;
-    }
+        enemy.GameManager.Wave++;
+        enemy.GameManager.Gold = Mathf.RoundToInt(enemy.GameManager.Gold * 1.1f);
+        enemy.EnemiesSpawned = 0;
+        enemy.LastSpawnTime = Time.time;
+        return enemy;
+    };
 }

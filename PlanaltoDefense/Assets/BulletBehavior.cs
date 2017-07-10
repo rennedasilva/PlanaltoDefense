@@ -231,7 +231,7 @@ public class BulletBehavior : MonoBehaviour
     {
         Speed = 10;
     }
-    
+
     void Start()
     {
         StartTime = Time.time;
@@ -239,29 +239,29 @@ public class BulletBehavior : MonoBehaviour
         GameObject gm = GameObject.Find("GameManager");
         GameManager = gm.GetComponent<GameManagerBehavior>();
     }
-    
+
     void Update()
-    {        
+    {
         float timeInterval = Time.time - StartTime;
         gameObject.transform.position = Vector3.Lerp(StartPosition, TargetPosition, timeInterval * Speed / Distance);
-        
+
         if (gameObject.transform.position.Equals(TargetPosition))
         {
-            if (Target != null)            
-                HitEnemy();           
+            if (Target != null && HitEnemy(this))
+                DestroyEnemy();
+
             Destroy(gameObject);
         }
     }
 
-    private void HitEnemy()
+    Func<BulletBehavior, bool> HitEnemy = (BulletBehavior bullet) =>
     {
-        Transform healthBarTransform = Target.transform.Find("HealthBar");
+        Transform healthBarTransform = bullet.Target.transform.Find("HealthBar");
         HealthBar healthBar = healthBarTransform.gameObject.GetComponent<HealthBar>();
-        healthBar.CurrentHealth -= Mathf.Max(Damage, 0);
+        healthBar.CurrentHealth -= Mathf.Max(bullet.Damage, 0);
 
-        if (healthBar.CurrentHealth <= 0)
-            DestroyEnemy();
-    }
+        return healthBar.CurrentHealth <= 0;
+    };
 
     private void DestroyEnemy()
     {

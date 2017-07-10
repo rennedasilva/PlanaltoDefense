@@ -159,16 +159,16 @@ public class MonsterData : MonoBehaviour
     {
         CurrentLevel = Levels[0];
     }
-    
+
     public MonsterLevel CurrentLevel
     {
         get
         {
             return currentLevel;
-        }     
+        }
         set
         {
-            currentLevel = value;           
+            currentLevel = value;
             SelectLevelSprite(Levels.IndexOf(currentLevel));
         }
     }
@@ -195,13 +195,5 @@ public class MonsterData : MonoBehaviour
         }
     }
 
-    public void IncreaseLevel()
-    {
-        int currentLevelIndex = Levels.IndexOf(currentLevel);
-        if (currentLevelIndex < Levels.Count - 1)
-        {
-            CurrentLevel = Levels[currentLevelIndex + 1];
-        }
-    }
-
+    public Func<int, List<MonsterLevel>, MonsterLevel> IncreaseLevel = (int currentLevelIndex, List<MonsterLevel> levels) => currentLevelIndex < levels.Count - 1 ? levels[currentLevelIndex + 1] : levels[currentLevelIndex];
 }
