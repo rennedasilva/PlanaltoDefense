@@ -1,0 +1,1 @@
+Esta pasta contém somente os arquivos que diferem de um paradigma para outro. O restante do jogo não foi alterado.
